@@ -26,6 +26,8 @@
 
 namespace src\transformer;
 
+use src\transformer\utils as utils;
+
 /**
  * Generic handler for the transformer.
  *
@@ -45,7 +47,11 @@ function handler(array $config, array $events) {
                 $eventconfig = array_merge([
                     'event_function' => $eventfunction,
                 ], $config);
-                $eventstatements = $eventfunction($eventconfig, $eventobj);
+                $eventstatements = utils\apply_global_xforms(
+                    $eventconfig,
+                    $eventobj,
+                    $eventfunction($eventconfig, $eventobj)
+                );
             } else {
                 $eventstatements = [];
             }
