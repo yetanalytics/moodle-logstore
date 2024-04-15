@@ -68,6 +68,7 @@ abstract class xapi_test_case extends \advanced_testcase {
     protected function get_event() {
         // TODO: only pull this once
         // get common event fields
+        global $CFG;
         $commonEvent = json_decode(file_get_contents($CFG->dirroot . '/admin/tool/log/store/xapi/tests/common/event.json'));
         // get this event
         $event = json_decode(file_get_contents($this->get_test_dir().'/event.json'));
@@ -83,6 +84,7 @@ abstract class xapi_test_case extends \advanced_testcase {
     protected function get_expected_statements() {
         // TODO: only pull this once
         // Get common statement fields
+        global $CFG;
         $commonStatement = json_decode(file_get_contents($CFG->dirroot . '/admin/tool/log/store/xapi/tests/common/statement.json'));
         $expectedStatements = array_map(function ($statement) use ($commonStatement) {
             // add common expectations for all statements
