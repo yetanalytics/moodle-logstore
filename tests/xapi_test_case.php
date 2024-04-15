@@ -196,7 +196,7 @@ abstract class xapi_test_case extends \advanced_testcase {
         foreach ($obj2 as $property => $value) {
             // Check if both properties are objects and merge recursively
             if (isset($newObject->$property) && is_object($newObject->$property) && is_object($value)) {
-                $newObject->$property = deepMergeObjects($newObject->$property, $value);
+                $newObject->$property = $this->deepMergeObjects($newObject->$property, $value);
             } else {
                 // Otherwise, overwrite the property
                 $newObject->$property = $value;
