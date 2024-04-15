@@ -25,8 +25,6 @@ require_once($CFG->dirroot . '/admin/tool/log/store/xapi/src/autoload.php');
 
 use \Locker\XApi\Statement as LockerStatement;
 
-const COMMON_STATEMENT = json_decode(file_get_contents('tests/common/statement.json'));
-
 /**
  * Default test cases for the plugin.
  *
