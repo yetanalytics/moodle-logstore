@@ -25,15 +25,6 @@ require_once($CFG->dirroot . '/admin/tool/log/store/xapi/src/autoload.php');
 
 use \Locker\XApi\Statement as LockerStatement;
 
-function objectToArray($data) {
-    if (is_array($data)) {
-        return array_map('objectToArray', $data);
-    } elseif ($data instanceof \stdClass) {
-        return objectToArray(get_object_vars($data));
-    }
-    return $data;
-}
-
 /**
  * Default test cases for the plugin.
  *
@@ -98,7 +89,7 @@ abstract class xapi_test_case extends \advanced_testcase {
         $commonStatement = json_decode(file_get_contents($CFG->dirroot . '/admin/tool/log/store/xapi/tests/common/statement.json'));
         return array_map(function ($statement) use ($commonStatement) {
             // add common expectations for all statements
-            return objectToArray($this->deepMergeObjects($statement, $commonStatement));
+            return $this->objectToArray($this->deepMergeObjects($statement, $commonStatement));
         }, json_decode(file_get_contents($this->get_test_dir().'/statements.json')));
     }
 
@@ -218,5 +209,19 @@ abstract class xapi_test_case extends \advanced_testcase {
             }
         }
         return $newObject;
+    }
+    /**
+     * Convert objects to arrays, deeply
+     *
+     * @param \stdClass $data An object
+     * @return array
+     */
+    private function objectToArray($data) {
+        if (is_array($data)) {
+            return array_map($this->objectToArray, $data);
+        } elseif ($data instanceof \stdClass) {
+            return $this->objectToArray(get_object_vars($data));
+        }
+        return $data;
     }
 }
