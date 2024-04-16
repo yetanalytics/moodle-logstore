@@ -22,7 +22,7 @@
  * @license   https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace test\utils;
+namespace tests\utils;
 
 /**
  * Given a deeply nested object representing JSON, make it an array

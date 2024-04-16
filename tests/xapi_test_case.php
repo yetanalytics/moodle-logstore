@@ -24,7 +24,7 @@ require_once($CFG->dirroot . '/admin/tool/log/store/xapi/vendor/autoload.php');
 require_once($CFG->dirroot . '/admin/tool/log/store/xapi/src/autoload.php');
 
 use \Locker\XApi\Statement as LockerStatement;
-use test\utils as utils;
+use tests\utils as utils;
 
 /**
  * Default test cases for the plugin.
