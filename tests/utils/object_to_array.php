@@ -31,16 +31,16 @@ namespace TestUtils;
  * @return array
  */
 function objectToArray($data) {
-    // If the data is an object, convert it to an array
+    // If the data is an object, convert it into an array
     if ($data instanceof stdClass) {
-        $data = (array) $data;
+        $data = (array)$data;
     }
 
-    // If the data is an array, recursively apply the conversion
+    // If the data is an array, apply the function recursively to each element
     if (is_array($data)) {
-        return array_map('objectToArray', $data);
+        foreach ($data as $key => $value) {
+            $data[$key] = objectToArray($value); // Recursive call
+        }
     }
-
-    // Return the data unchanged if it is not an array or object
     return $data;
 }
