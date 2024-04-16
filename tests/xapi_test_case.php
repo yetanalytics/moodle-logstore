@@ -92,7 +92,7 @@ abstract class xapi_test_case extends \advanced_testcase {
         $commonStatement = json_decode(file_get_contents($CFG->dirroot . '/admin/tool/log/store/xapi/tests/common/statement.json'));
         return array_map(function ($statement) use ($commonStatement) {
             // add common expectations for all statements
-            return utils\objectToArray(utils\deepMergeObjects($statement, $commonStatement));
+            return utils\deepMergeObjects($statement, $commonStatement);
         }, json_decode(file_get_contents($this->get_test_dir().'/statements.json')));
     }
 
@@ -187,7 +187,10 @@ abstract class xapi_test_case extends \advanced_testcase {
 
         if (array_key_exists($pluginname, $plugins) || $plugintype == 'core') {
             $expectedstatements = $this->get_expected_statements();
-            $this->assertEquals($expectedstatements, $statements);
+            $this->assertEquals(
+                utils\objectToArray($expectedstatements),
+                utils\objectToArray($statements)
+            );
         } else {
             $this->markTestSkipped('Plugin ' . $pluginname . ' not installed, skipping');
         }
