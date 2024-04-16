@@ -80,18 +80,17 @@ abstract class xapi_test_case extends \advanced_testcase {
     /**
      * Retrieve the expected statement from statements.json.
      *
-     * @return string|false
+     * @return \stdClass
      */
     protected function get_expected_statements() {
         // TODO: only pull this once
         // Get common statement fields
         global $CFG;
         $commonStatement = json_decode(file_get_contents($CFG->dirroot . '/admin/tool/log/store/xapi/tests/common/statement.json'));
-        $expectedStatements = array_map(function ($statement) use ($commonStatement) {
+        return array_map(function ($statement) use ($commonStatement) {
             // add common expectations for all statements
             return $this->deepMergeObjects($statement, $commonStatement);
         }, json_decode(file_get_contents($this->get_test_dir().'/statements.json')));
-        return json_encode($expectedStatements, JSON_PRETTY_PRINT);
     }
 
     /**
@@ -185,12 +184,18 @@ abstract class xapi_test_case extends \advanced_testcase {
 
         if (array_key_exists($pluginname, $plugins) || $plugintype == 'core') {
             $expectedstatements = $this->get_expected_statements();
-            $actualstatements = json_encode($statements, JSON_PRETTY_PRINT);
-            $this->assertEquals($expectedstatements, $actualstatements);
+            $this->assertEquals($expectedstatements, $statements);
         } else {
             $this->markTestSkipped('Plugin ' . $pluginname . ' not installed, skipping');
         }
     }
+    /**
+     * Merge two objects including deep assignments.
+     *
+     * @param \stdClass $obj1 The first object
+     * @param \stdClass $obj2 The second object
+     * @return \stdClass
+     */
     private function deepMergeObjects($obj1, $obj2) {
         $newObject = clone $obj1; // Clone the first object
 
