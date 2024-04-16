@@ -22,8 +22,10 @@ global $CFG;
 
 require_once($CFG->dirroot . '/admin/tool/log/store/xapi/vendor/autoload.php');
 require_once($CFG->dirroot . '/admin/tool/log/store/xapi/src/autoload.php');
-require_once($CFG->dirroot . '/admin/tool/log/store/xapi/tests/utils/object_to_array.php');
-require_once($CFG->dirroot . '/admin/tool/log/store/xapi/tests/utils/deep_merge_objects.php');
+
+foreach (glob($CFG->dirroot . '/admin/tool/log/store/xapi/tests/utils/*.php') as $filename) {
+    require_once($filename);
+}
 
 use \Locker\XApi\Statement as LockerStatement;
 use TestUtils as utils;
