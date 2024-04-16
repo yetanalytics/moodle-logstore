@@ -23,6 +23,7 @@ global $CFG;
 require_once($CFG->dirroot . '/admin/tool/log/store/xapi/vendor/autoload.php');
 require_once($CFG->dirroot . '/admin/tool/log/store/xapi/src/autoload.php');
 require_once($CFG->dirroot . '/admin/tool/log/store/xapi/tests/utils/object_to_array.php');
+require_once($CFG->dirroot . '/admin/tool/log/store/xapi/tests/utils/deep_merge_objects.php');
 
 use \Locker\XApi\Statement as LockerStatement;
 use TestUtils as utils;
@@ -76,7 +77,7 @@ abstract class xapi_test_case extends \advanced_testcase {
         // get this event
         $event = json_decode(file_get_contents($this->get_test_dir().'/event.json'));
         // merge and return
-        return $this->deepMergeObjects($event, $commonEvent);
+        return utils\deepMergeObjects($event, $commonEvent);
     }
 
     /**
@@ -91,7 +92,7 @@ abstract class xapi_test_case extends \advanced_testcase {
         $commonStatement = json_decode(file_get_contents($CFG->dirroot . '/admin/tool/log/store/xapi/tests/common/statement.json'));
         return array_map(function ($statement) use ($commonStatement) {
             // add common expectations for all statements
-            return utils\objectToArray($this->deepMergeObjects($statement, $commonStatement));
+            return utils\objectToArray(utils\deepMergeObjects($statement, $commonStatement));
         }, json_decode(file_get_contents($this->get_test_dir().'/statements.json')));
     }
 
@@ -190,26 +191,5 @@ abstract class xapi_test_case extends \advanced_testcase {
         } else {
             $this->markTestSkipped('Plugin ' . $pluginname . ' not installed, skipping');
         }
-    }
-    /**
-     * Merge two objects including deep assignments.
-     *
-     * @param \stdClass $obj1 The first object
-     * @param \stdClass $obj2 The second object
-     * @return \stdClass
-     */
-    private function deepMergeObjects($obj1, $obj2) {
-        $newObject = clone $obj1; // Clone the first object
-
-        foreach ($obj2 as $property => $value) {
-            // Check if both properties are objects and merge recursively
-            if (isset($newObject->$property) && is_object($newObject->$property) && is_object($value)) {
-                $newObject->$property = $this->deepMergeObjects($newObject->$property, $value);
-            } else {
-                // Otherwise, overwrite the property
-                $newObject->$property = $value;
-            }
-        }
-        return $newObject;
     }
 }
