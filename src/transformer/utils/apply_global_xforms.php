@@ -35,8 +35,8 @@ namespace src\transformer\utils;
 function apply_global_xforms(array $config, \stdClass $event, array $statements) {
     return array_map(function ($statement) use ($config, $event) {
         // apply any global transformations to statements.
-        add_context_registration($config, $statement);
-        add_timestamp($event, $statement);
-        return $statement;
+        $s0 = add_context_registration($config, $statement);
+        $s1 = add_timestamp($event, $s0);
+        return $s1;
     }, $statements);
 }
