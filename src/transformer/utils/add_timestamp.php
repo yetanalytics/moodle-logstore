@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Apply global transformations to statements.
+ * Transformer utility for adding xAPI timestamp to statements.
  *
  * @package   logstore_xapi
  * @copyright Milt Reder <milt@yetanalytics.com>
@@ -24,19 +24,16 @@
 
 namespace src\transformer\utils;
 
+use src\transformer\utils as utils;
+
 /**
- * Given the config, source event and statements, apply global transformations.
+ * Return the requested verb with details.
  *
- * @param array $config configuration array.
- * @param \stdClass $event original event
- * @param array $statements generated xAPI statements.
- * @return array
+ * @param \stdClass $event Moodle event
+ * @param array $statement xAPI statement.
+ * @return string
  */
-function apply_global_xforms(array $config, \stdClass $event, array $statements) {
-    return array_map(function ($statement) use ($config, $event) {
-        // apply any global transformations to statements.
-        add_context_registration($config, $statement);
-        add_timestamp($event, $statement);
-        return $statement;
-    }, $statements);
+function add_timestamp(\stdClass $event, array $statement) {
+    $statement['timestamp'] = utils\get_event_timestamp($event);
+    return $statement;
 }
