@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Apply global transformations to statements.
+ * Utility for deep-merging arrays
  *
  * @package   logstore_xapi
  * @copyright Milt Reder <milt@yetanalytics.com>
@@ -25,22 +25,22 @@
 namespace src\transformer\utils;
 
 /**
- * Given the config, source event and statements, apply global transformations.
+ * Merge two arrays including deep assignments.
  *
- * @param array $config configuration array.
- * @param \stdClass $event original event
- * @param array $statements generated xAPI statements.
+ * @param array $arr1 The first array
+ * @param array $arr2 The second array
  * @return array
  */
-function apply_global_xforms(array $config, \stdClass $event, array $statements) {
-    return array_map(function ($statement) use ($config, $event) {
-        $defaultStatement = [[
-            'context' => [[
-                'registration' => stringToUuidV5($config['session_id']),
-            ]],
-            'timestamp' => get_event_timestamp($event),
-        ]];
-        // Merge event output into defaults
-        return utils\deepMergeArrays($defaultStatement, $statement);
-    }, $statements);
+function deepMergeArrays($arr1, $arr2) {
+    // Merge the second array into the first one
+    foreach ($arr2 as $key => $value) {
+        // If the key exists in the first array and both values are arrays, recurse
+        if (array_key_exists($key, $arr1) && is_array($arr1[$key]) && is_array($value)) {
+            $arr1[$key] = deepMergeArrays($arr1[$key], $value);
+        } else {
+            // Otherwise, use the second array's value (overwrites or sets new key)
+            $arr1[$key] = $value;
+        }
+    }
+    return $arr1;
 }
