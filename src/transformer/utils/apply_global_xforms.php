@@ -34,12 +34,12 @@ namespace src\transformer\utils;
  */
 function apply_global_xforms(array $config, \stdClass $event, array $statements) {
     return array_map(function ($statement) use ($config, $event) {
-        $defaultStatement = [[
-            'context' => [[
+        $defaultStatement = [
+            'context' => [
                 'registration' => stringToUuidV5($config['session_id']),
-            ]],
+            ],
             'timestamp' => get_event_timestamp($event),
-        ]];
+        ];
         // Merge event output into defaults
         return deepMergeArrays($defaultStatement, $statement);
     }, $statements);
