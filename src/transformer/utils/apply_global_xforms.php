@@ -41,6 +41,6 @@ function apply_global_xforms(array $config, \stdClass $event, array $statements)
             'timestamp' => get_event_timestamp($event),
         ];
         // Merge event output into defaults
-        return deepMergeArrays($defaultStatement, $statement);
+        return deep_merge_arrays($defaultStatement, $statement);
     }, $statements);
 }

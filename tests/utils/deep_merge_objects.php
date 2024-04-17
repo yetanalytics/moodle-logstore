@@ -31,13 +31,13 @@ namespace TestUtils;
  * @param \stdClass $obj2 The second object
  * @return \stdClass
  */
-function deepMergeObjects($obj1, $obj2) {
+function deep_merge_objects($obj1, $obj2) {
     $newObject = clone $obj1; // Clone the first object
 
     foreach ($obj2 as $property => $value) {
         // Check if both properties are objects and merge recursively
         if (isset($newObject->$property) && is_object($newObject->$property) && is_object($value)) {
-            $newObject->$property = deepMergeObjects($newObject->$property, $value);
+            $newObject->$property = deep_merge_objects($newObject->$property, $value);
         } else {
             // Otherwise, overwrite the property
             $newObject->$property = $value;
