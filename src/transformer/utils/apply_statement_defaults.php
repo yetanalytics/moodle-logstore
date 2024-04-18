@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Apply global transformations to statements.
+ * Apply default values to statements.
  *
  * @package   logstore_xapi
  * @copyright Milt Reder <milt@yetanalytics.com>
@@ -25,14 +25,14 @@
 namespace src\transformer\utils;
 
 /**
- * Given the config, source event and statements, apply global transformations.
+ * Given the config, source event and statements, apply default values.
  *
  * @param array $config configuration array.
  * @param \stdClass $event original event
  * @param array $statements generated xAPI statements.
  * @return array
  */
-function apply_global_xforms(array $config, \stdClass $event, array $statements) {
+function apply_statement_defaults(array $config, \stdClass $event, array $statements) {
     return array_map(function ($statement) use ($config, $event) {
         $defaultStatement = [
             'context' => [
