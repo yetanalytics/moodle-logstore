@@ -35,7 +35,6 @@ namespace src\transformer\utils;
 function apply_statement_defaults(array $config, \stdClass $event, array $statements) {
     return array_map(function ($statement) use ($config, $event) {
         $defaultStatement = [
-            'version' => '1.0.3',
             'context' => [
                 'platform' => $config['source_name'] ?? 'Moodle',
                 'registration' => stringToUuidV5($config['session_id']),
